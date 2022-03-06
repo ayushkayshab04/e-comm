@@ -2,6 +2,7 @@ const express = require("express");
 const {User} = require("./user.js")
 const mongoose = require("mongoose")
 const jwt = require("jsonwebtoken")
+const auth = require("../isAuthenticated.js")
 const app = express()
 const port =process.env.PORT||3000
 app.use(express.json())
@@ -10,7 +11,7 @@ mongoose.connect("mongodb://localhost/auth" ,()=>{
     console.log("Auth service db connected")
 } )
 
-app.post("/auth/login" , async(req,res)=>{
+app.post("/auth/login" , auth, async(req,res)=>{
     const {email,password} = req.body;
 
     const user = await User.findOne({email})
